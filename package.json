@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "description": "my second chat app",
-  "author": "Albert",
+  "author": "Constantin, Dragos, Marius, Paul",
   "license":"ISC",
   "dependencies": {
     "express": "^4.16.4",
