@@ -8,12 +8,13 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
 	console.log('someone connected!');
-	socket.on('chat message', function(message) {
-		console.log(message);
-		io.emit('chat message', message); 
+	socket.on('chat message', function(date, name, message) {
+		var messageString = '<' + name + '> '+ date + " : " + message;
+		console.log(messageString);
+		io.emit('chat message', messageString);
 	});
 });
 
-http.listen(8003, function(){
-	console.log('listening on port 8003');
+http.listen(8080, function(){
+	console.log('listening on port 8080');
 });

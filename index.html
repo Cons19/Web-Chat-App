@@ -4,12 +4,82 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 	<script>
+		const nicknames = [
+			"Alligator",
+			"Armadillo",
+			"Bat",
+			"Bear",
+			"Beaver",
+			"Buffalo",
+			"Camel",
+			"Chameleon",
+			"Cheetah",
+			"Chinchilla",
+			"Chipmunk",
+			"Chupacabra",
+			"Cormorant",
+			"Coyote",
+			"Crow",
+			"Dingo",
+			"Dinosaur",
+			"Dog",
+			"Dolphin",
+			"Duck",
+			"Elephant",
+			"Fox",
+			"Frog",
+			"Giraffe",
+			"Grizzly",
+			"Hippo",
+			"Hyena",
+			"Iguana",
+			"Jackal",
+			"Kangaroo",
+			"Koala",
+			"Kraken",
+			"Lemur",
+			"Leopard",
+			"Lion",
+			"Llama",
+			"Mink",
+			"Monkey",
+			"Moose",
+			"Nyan Cat",
+			"Orangutan",
+			"Panda",
+			"Penguin",
+			"Python",
+			"Rabbit",
+			"Raccoon",
+			"Rhino",
+			"Sheep",
+			"Squirrel",
+			"Tiger",
+			"Turtle",
+			"Walrus",
+			"Wolf",
+			"Wolverine",
+		];
+
 		$(function(){
-			alert("javascript running..., not jogging!");
-			var socket = io();
-			$('#mform').submit( function (){
-				socket.emit('chat message', $('#m').val());
-				$('#m').val('');
+			let socket = io();
+			$('#message-form').submit( function (){
+				let message = $('#message');
+				let name = $('#name');
+				if (name.val() === '') {
+					let randNick = nicknames[randomNumber(0, nicknames.length - 1)];
+					name.val(randNick);
+					alert("Randon nick chosen: " + randNick);
+				}
+
+				let d = new Date();
+				let h = formatTime(d.getHours());
+				let m = formatTime(d.getMinutes());
+				let s = formatTime(d.getSeconds());
+				let date = h + ':' + m + ':' + s;
+
+				socket.emit('chat message', date, name.val(), message.val());
+				message.val('');
 				return false;
 			});
 			socket.on('chat message', function(msg){
@@ -18,14 +88,38 @@
 			});
 
 		});
+
+		function randomNumber(min, max) {
+			return Math.floor(Math.random() * (max - min) + min);
+		}
+
+		function formatTime(time) {
+			if(time.toString().length < 2) {
+				return '0' + time;
+			} else {
+				return time;
+			}
+		};
+
+		function emoji(emoji) {
+			let message = $('#message');
+			message.val(message.val() + emoji);
+		}
 	</script>
 </head>
 <body>
-<h3>Hello <h3>
+	<input type="text" id="name">
+
 	<ul id="messages"></ul>
-	<form id="mform">
-		<input id="m">
+
+	<form id="message-form">
+		<input id="message">
 		<button>Send</button>
 	</form>
+
+	<button onclick="emoji('😀')">😀</button>
+	<button onclick="emoji('😂')">😂</button>
+	<button onclick="emoji('😴')">😴</button>
+	<button onclick="emoji('🎅')">🎅</button>
 </body>
 </html>
